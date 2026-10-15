@@ -25,7 +25,7 @@ export const createUser = async ({
   return rows[0];
 };
 
-// Find a user by id (without password)
+// Find a user by id
 export const findUserById = async (id) => {
   const { rows } = await pool.query(
     "SELECT id, first_name, last_name, email, phone_no, created_at FROM users WHERE id = $1",

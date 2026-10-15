@@ -3,6 +3,7 @@ import express from "express";
 import { connectDB } from "./config/db.js";
 import { authRouter } from "./routes/Users/authRoutes.js";
 import cors from "cors";
+import { dashboardRouter } from "./routes/Dashboard/dashboardRoute.js";
 const app = express();
 
 app.use(cors({ origin: process.env.CLIENT_URL }));
@@ -12,7 +13,8 @@ app.use(express.json());
 
 // All auth routes start with /api/auth
 app.use("/api/auth", authRouter);
-
+// All dashboard routes start with /api/dashboard
+app.use("/api/dashboard", dashboardRouter);
 // Port from .env
 const port = process.env.PORT || 5001;
 

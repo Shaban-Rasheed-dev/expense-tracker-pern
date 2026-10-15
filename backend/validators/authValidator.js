@@ -31,7 +31,7 @@ export const signUpSchema = z.object({
   phoneNo: z
     .string()
     .trim()
-    .regex(/^\+?\d{10,15}$/, "Invalid phone number")
+    .regex(/^\+?\d{10,15}$/, "Invalid phone number please enter 11 digits")
     .optional(),
 });
 
