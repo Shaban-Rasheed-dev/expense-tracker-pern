@@ -1,7 +1,42 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { api } from "../apis/axios";
+
 export const Dashboard = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  // Load the dashboard data when the page opens
+  useEffect(() => {
+    const loadDashboard = async () => {
+      try {
+        const response = await api.get("/dashboard");
+        setUser(response.data.user);
+      } catch (error) {
+        // 401 = missing, invalid or expired token
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/login");
+          return;
+        }
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    };
+    loadDashboard();
+  }, [navigate]);
+
+  if (!user) return null;
+
   return (
-    <>
-      <h1>dashboard</h1>
-    </>
+    <div className="rounded-xl bg-white p-6 shadow">
+      <h2 className="text-xl font-bold text-heading">
+        Welcome, {user.firstName}
+      </h2>
+      <p className="mt-1 text-sm text-body">
+        Your income and expense summary will appear here.
+      </p>
+    </div>
   );
 };
