@@ -121,7 +121,7 @@ POST /signup
   "lastName": "Khan",
   "email": "ali@example.com",
   "password": "12345678",
-  "phoneNo": "03001234567"
+  "phoneNo": "123456789"
 }
 ```
 
