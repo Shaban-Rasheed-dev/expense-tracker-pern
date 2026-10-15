@@ -142,4 +142,4 @@ POST /signup
 
 ## Author
 
-Your Name - [GitHub](https://github.com/your-username)
+Shaban Rasheed
