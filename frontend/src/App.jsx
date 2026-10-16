@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 
 import { DashboardLayout } from "./layout/DashboardLayout";
 import { navLinks } from "./constants/navLinks";
+import { PublicRoute } from "./components/PublicRoute";
 
 const App = () => {
   return (
@@ -17,8 +18,10 @@ const App = () => {
       <Routes>
         {/* Only for logged-out users */}
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
 
         {/* Only for logged-in users, all inside the dashboard layout */}
         <Route element={<ProtectedRoute />}>

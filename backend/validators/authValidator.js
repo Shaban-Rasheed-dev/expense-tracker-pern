@@ -13,7 +13,7 @@ const emailField = z
   .string()
   .trim()
   .toLowerCase()
-  .email("Invalid email")
+  .email("Please enter a valid email")
   .max(255, "Email must not be greater than 255 characters");
 
 // Password rule used at signup
@@ -23,18 +23,24 @@ const passwordField = z
   .max(72, "Password must not be greater than 72 characters");
 
 // Signup validation
-export const signUpSchema = z.object({
-  firstName: nameField("First name"),
-  lastName: nameField("Last name"),
-  email: emailField,
-  password: passwordField,
-  phoneNo: z
-    .string()
-    .trim()
-    .regex(/^\+?\d{10,15}$/, "Invalid phone number please enter 11 digits")
-    .optional(),
-});
-
+export const signUpSchema = z
+  .object({
+    firstName: nameField("First name"),
+    lastName: nameField("Last name"),
+    email: emailField,
+    password: passwordField,
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+    phoneNo: z
+      .string()
+      .trim()
+      .regex(/^\+?\d{10,15}$/, "Invalid phone number, please enter 11 digits")
+      .optional(),
+  })
+  // Runs after all fields are valid: both passwords must be the same
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 // Login validation
 export const loginSchema = z.object({
   email: emailField,
