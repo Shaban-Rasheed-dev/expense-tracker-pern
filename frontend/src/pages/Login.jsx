@@ -4,6 +4,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { api } from "../apis/axios";
 import { loginSchema } from "../validators/authValidator";
+import CryptoJS from "crypto-js";
 
 export const Login = () => {
   // Navigate to the dashboard after successful login
@@ -39,8 +40,12 @@ export const Login = () => {
       // Send email and password to the login API
       const response = await api.post("/auth/login", result.data);
 
+      const encrypted = CryptoJS.AES.encrypt(
+        response.data.token,
+        import.meta.env.VITE_JWT_SECRET,
+      ).toString();
       // Save the authentication token for future API requests
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", encrypted);
 
       // Save user information as a JSON string
       localStorage.setItem("user", JSON.stringify(response.data.user));
@@ -81,6 +86,7 @@ export const Login = () => {
 
         {/* Arrange the form fields and button vertically */}
         <form
+          noValidate
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 md:gap-4.5"
         >

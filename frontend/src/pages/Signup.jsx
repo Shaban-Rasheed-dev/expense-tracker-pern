@@ -89,6 +89,7 @@ export const Signup = () => {
 
         {/* Stack form rows vertically with consistent spacing */}
         <form
+          noValidate
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 md:gap-4.5"
         >
