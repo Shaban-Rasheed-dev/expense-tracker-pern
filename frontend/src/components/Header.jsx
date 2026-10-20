@@ -1,16 +1,7 @@
-import { MdMenu, MdLogout } from "react-icons/md";
+import { MdMenu } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-// Read the saved user safely (returns null if missing or broken)
-const getUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem("user"));
-  } catch {
-    return null;
-  }
-};
-
+import { clearAuth, getUser } from "../utils/auth";
 export const Header = ({ title, onMenuClick }) => {
   const navigate = useNavigate();
   const user = getUser();
@@ -18,10 +9,9 @@ export const Header = ({ title, onMenuClick }) => {
 
   // Remove the saved login data and go back to login
   const logOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    clearAuth();
     toast.success("Logged out");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../apis/axios";
-
+import { clearAuth } from "../utils/auth";
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -16,9 +16,8 @@ export const Dashboard = () => {
       } catch (error) {
         // 401 = missing, invalid or expired token
         if (error.response?.status === 401) {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-          navigate("/login");
+          clearAuth();
+          navigate("/login", { replace: true });
           return;
         }
         toast.error(error.response?.data?.message || "Something went wrong");
