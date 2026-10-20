@@ -4,7 +4,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { api } from "../apis/axios";
 import { loginSchema } from "../validators/authValidator";
-import CryptoJS from "crypto-js";
+import { saveAuth } from "../utils/auth";
 
 export const Login = () => {
   // Navigate to the dashboard after successful login
@@ -13,7 +13,7 @@ export const Login = () => {
   // Store the email and password input values
   const [form, setForm] = useState({
     email: "",
-    password: "",
+    password: "Shaban.123",
   });
 
   // Control password visibility
@@ -39,21 +39,15 @@ export const Login = () => {
     try {
       // Send email and password to the login API
       const response = await api.post("/auth/login", result.data);
-
-      const encrypted = CryptoJS.AES.encrypt(
-        response.data.token,
-        import.meta.env.VITE_JWT_SECRET,
-      ).toString();
-      // Save the authentication token for future API requests
-      localStorage.setItem("token", encrypted);
-
-      // Save user information as a JSON string
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      // Save the token and user (both encrypted) for future requests
+      saveAuth(response.data.token, response.data.user);
 
       // Show success feedback and open the dashboard
       toast.success(response.data.message);
       navigate("/dashboard", { replace: true });
     } catch (error) {
+      console.log(error);
+
       // Display the backend error or a fallback message
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
