@@ -3,7 +3,7 @@ import { findUserById } from "../../models/dashboard/dashboardModel.js";
 // Return the logged-in user's dashboard data
 export const getDashboardData = async (req, res) => {
   try {
-    // req.user is set by authMiddleware from the verified token
+    // req.user is set by authTokenMiddleware from the verified token
     const user = await findUserById(req.user.id);
     // Token is valid but the user no longer exists
     if (!user) {

@@ -10,3 +10,20 @@ CREATE TABLE IF NOT EXISTS users (
     created_at     TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
     updated_at     TIMESTAMPTZ
 );
+
+
+-- Categories table
+CREATE TABLE IF NOT EXISTS categories (
+    id             INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id        INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name           VARCHAR(50) NOT NULL,
+    type           VARCHAR(10) NOT NULL CHECK (type IN ('income','expense')),
+    created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at     TIMESTAMPTZ
+
+);
+
+-- One user cannot have the same name twice for the same type (Bike and bike count as the same)
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_category_name_type
+    ON categories (user_id, LOWER(name), type);
+

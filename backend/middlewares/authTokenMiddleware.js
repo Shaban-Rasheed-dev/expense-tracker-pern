@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 // Verify the JWT from the Authorization header
-export const authMiddleware = (req, res, next) => {
+export const authTokenMiddleware = (req, res, next) => {
   // Expected format: "Authorization: Bearer <token>"
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
